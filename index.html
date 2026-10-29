@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livingroom IPTV Player - Next-Gen Media Player for Android TV & Mobile</title>
+    <meta name="description" content="Livingroom IPTV Player is a fast, hardware-accelerated 4K media player for Android TV, Google TV, smartphones, and tablets. Supports Xtream Codes API and M3U playlists.">
+    <link rel="icon" href="store_assets/app_icon_512x512.png" type="image/png">
+    <style>
+        :root {
+            --bg-color: #0b0e17;
+            --card-bg: #131826;
+            --card-border: #222b3e;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --accent-cyan: #00e5ff;
+            --accent-purple: #7c4dff;
+            --accent-gradient: linear-gradient(135deg, #00e5ff 0%, #7c4dff 100%);
+            --glow-color: rgba(0, 229, 255, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #00e5ff, #7c4dff);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 900;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: var(--accent-cyan);
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            margin-left: 24px;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        .btn-privacy {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--accent-cyan) !important;
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid var(--accent-cyan);
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1100px;
+            margin: 60px auto 40px;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 229, 255, 0.08);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            color: var(--accent-cyan);
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            font-size: 54px;
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            letter-spacing: -1.5px;
+        }
+
+        h1 span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 760px;
+            margin: 0 auto 36px;
+        }
+
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .tag {
+            background: #182236;
+            border: 1px solid #2b3954;
+            color: #d1d5db;
+            padding: 8px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Mockup Preview Card */
+        .mockup-container {
+            max-width: 1000px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+
+        .mockup-frame {
+            background: linear-gradient(180deg, #161e31 0%, #0e1320 100%);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 28px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 229, 255, 0.2);
+            text-align: left;
+        }
+
+        .mockup-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+
+        .mockup-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .mockup-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .mock-card {
+            background: #1a2337;
+            border-radius: 18px;
+            padding: 24px;
+            border: 1px solid var(--card-border);
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .mock-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-cyan);
+        }
+
+        .mock-card-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .mock-card h4 {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .mock-card p {
+            font-size: 13px;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        /* Features Section */
+        .features-section {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 17px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(0, 229, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .feature-icon-wrapper {
+            width: 52px;
+            height: 52px;
+            background: rgba(0, 229, 255, 0.1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--accent-cyan);
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .feature-card p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Legal Disclaimer Section */
+        .disclaimer-section {
+            max-width: 1000px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .disclaimer-card {
+            background: rgba(255, 109, 0, 0.08);
+            border: 1px solid rgba(255, 109, 0, 0.4);
+            border-radius: 20px;
+            padding: 30px;
+        }
+
+        .disclaimer-card h3 {
+            color: #ff9100;
+            font-size: 18px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .disclaimer-card p {
+            color: #fed7aa;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .disclaimer-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--card-border);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+            .hero-desc {
+                font-size: 17px;
+            }
+            .mockup-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-links a {
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo-box">
+            <div class="logo-icon">▶</div>
+            <div class="logo-text">Livingroom <span>IPTV</span></div>
+        </a>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#disclaimer">Disclaimer</a>
+            <a href="privacy.html" class="btn-privacy">Privacy Policy</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="badge-pill">✨ Next-Generation Android Media Engine</div>
+        <h1>Smart IPTV Streaming for <span>Android TV & Mobile</span></h1>
+        <p class="hero-desc">
+            Experience ultra-smooth 4K playback, seamless D-Pad remote control navigation, real-time sports live scores, and instant Xtream / M3U playlist integration.
+        </p>
+
+        <div class="hero-badges">
+            <div class="tag">📺 100% Android TV & Google TV Ready</div>
+            <div class="tag">🚀 Hardware-Accelerated 4K Playback</div>
+            <div class="tag">⚽ Integrated Live Match Scores</div>
+            <div class="tag">🔒 100% Local Data Privacy</div>
+        </div>
+    </section>
+
+    <!-- TV Mockup Interactive Card -->
+    <section class="mockup-container">
+        <div class="mockup-frame">
+            <div class="mockup-top-bar">
+                <div class="mockup-title">Livingroom IPTV Player (Big Screen Experience)</div>
+                <div style="color: var(--accent-cyan); font-size: 13px; font-weight: 700;">● STREAM ENGINE READY</div>
+            </div>
+            <div class="mockup-grid">
+                <div class="mock-card">
+                    <div class="mock-card-icon">📺</div>
+                    <h4>LIVE TV</h4>
+                    <p>Fast Channel Switching</p>
+                </div>
+                <div class="mock-card">
+                    <div class="mock-card-icon">🎬</div>
+                    <h4>VOD MOVIES</h4>
+                    <p>Multi-Audio & Subtitles</p>
+                </div>
+                <div class="mock-card">
+                    <div class="mock-card-icon">🍿</div>
+                    <h4>TV SERIES</h4>
+                    <p>Organized Seasons & Episodes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="section-header">
+            <h2>Designed for the Modern Living Room</h2>
+            <p>Everything you need for premium media entertainment on big screen TVs and mobile devices.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">🎮</div>
+                <h3>Remote Control (D-Pad) Optimized</h3>
+                <p>Designed specifically for TV remotes with fluid focus animations, rapid scrolling, and intuitive one-click action shortcuts.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">⚡</div>
+                <h3>Xtream Codes & M3U Integration</h3>
+                <p>Seamlessly connect with your Xtream Codes API credentials or paste M3U playlist links. Automatic category synchronization and EPG parsing.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">⚽</div>
+                <h3>Real-Time Sports Live Scores</h3>
+                <p>Track live scores and match statistics side-by-side with your streams without switching apps or leaving your full-screen game.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">🎧</div>
+                <h3>Multi-Audio & Subtitles</h3>
+                <p>Effortlessly switch between alternate audio languages (Dolby Digital, 5.1 surround) and enable embedded subtitles on supported streams.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">📱</div>
+                <h3>Responsive Multi-Device Layout</h3>
+                <p>Adaptive layout that transitions seamlessly between Android TV boxes, foldable screens, tablets, and smartphones.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">🛡️</div>
+                <h3>Zero Server Data Storage</h3>
+                <p>Your streaming credentials and playlists are stored exclusively on your device. We never collect or transmit your private media URLs.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Legal & Content Disclaimer Section -->
+    <section class="disclaimer-section" id="disclaimer">
+        <div class="disclaimer-card">
+            <h3>⚠️ Important Legal & Copyright Notice</h3>
+            <p>
+                • <strong>Livingroom IPTV Player does not supply, host, broadcast, or provide any media content or TV streams.</strong> Users must supply their own playlist links (M3U / M3U8) or Xtream Codes credentials obtained from authorized services.
+            </p>
+            <p>
+                • Livingroom IPTV Player has no affiliation with any third-party content providers. We do not endorse or support the streaming of copyright-protected material without proper permission from the copyright holder.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div style="color: var(--text-secondary); font-size: 14px;">
+                &copy; 2026 <strong>Livingroom IPTV Player</strong>. All rights reserved.
+            </div>
+            <div class="footer-links">
+                <a href="#features">Features</a>
+                <a href="#disclaimer">Disclaimer</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="https://github.com/hasonx40/livingroomiptv" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
